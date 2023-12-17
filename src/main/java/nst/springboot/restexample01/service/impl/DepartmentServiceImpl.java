@@ -2,18 +2,17 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package nst.springboot.restexample01.controller.service.impl;
+package nst.springboot.restexample01.service.impl;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import nst.springboot.restexample01.controller.domain.Department;
-import nst.springboot.restexample01.controller.repository.DepartmentRepository;
-import nst.springboot.restexample01.controller.service.DepartmentService;
-import nst.springboot.restexample01.converter.impl.DepartmentConverter;
+import nst.springboot.restexample01.domain.Department;
+import nst.springboot.restexample01.repository.DepartmentRepository;
+import nst.springboot.restexample01.service.DepartmentService;
+import nst.springboot.restexample01.adapter.impl.DepartmentAdapter;
 import nst.springboot.restexample01.dto.DepartmentDto;
 import nst.springboot.restexample01.exception.DepartmentAlreadyExistException;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 /**
@@ -23,14 +22,14 @@ import org.springframework.stereotype.Service;
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
 
-    private DepartmentConverter departmentConverter;
+    private DepartmentAdapter departmentAdapter;
     private DepartmentRepository departmentRepository;
 
     public DepartmentServiceImpl(
             DepartmentRepository departmentRepository,
-            DepartmentConverter departmentConverter) {
+            DepartmentAdapter departmentAdapter) {
         this.departmentRepository = departmentRepository;
-        this.departmentConverter = departmentConverter;
+        this.departmentAdapter = departmentAdapter;
     }
 
     @Override
@@ -41,9 +40,9 @@ public class DepartmentServiceImpl implements DepartmentService {
         } else {
             //DTO - > Entity
             //Department department = new Department(departmentDto.getId(), departmentDto.getName());
-            Department department = departmentConverter.toEntity(departmentDto);
+            Department department = departmentAdapter.toEntity(departmentDto);
             department = departmentRepository.save(department);
-            return departmentConverter.toDto(department);
+            return departmentAdapter.toDto(department);
         }
     }
 
@@ -72,7 +71,7 @@ public class DepartmentServiceImpl implements DepartmentService {
         if (dept.isPresent()) {
             //postoji
             Department department = dept.get();
-            return departmentConverter.toDto(department);
+            return departmentAdapter.toDto(department);
         } else {
             throw new Exception("Department does not exist!");
         }
@@ -82,7 +81,7 @@ public class DepartmentServiceImpl implements DepartmentService {
     public List<DepartmentDto> getAll() {
         return departmentRepository
                 .findAll()
-                .stream().map(entity -> departmentConverter.toDto(entity))
+                .stream().map(entity -> departmentAdapter.toDto(entity))
                 .collect(Collectors.toList());
     }
 

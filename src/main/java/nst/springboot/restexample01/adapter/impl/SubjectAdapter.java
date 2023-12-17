@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package nst.springboot.restexample01.converter.impl;
+package nst.springboot.restexample01.adapter.impl;
 
-import nst.springboot.restexample01.controller.domain.Subject;
-import nst.springboot.restexample01.converter.DtoEntityConverter;
+import nst.springboot.restexample01.domain.Subject;
+import nst.springboot.restexample01.adapter.DtoEntityAdapter;
 import nst.springboot.restexample01.dto.SubjectDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -16,16 +16,16 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class SubjectConverter implements DtoEntityConverter<SubjectDto, Subject>{
+public class SubjectAdapter implements DtoEntityAdapter<SubjectDto, Subject> {
     @Autowired
-    private DepartmentConverter departmentConverter;
+    private DepartmentAdapter departmentAdapter;
     
     @Override
     public SubjectDto toDto(Subject entity) {
         return new SubjectDto(
                 entity.getId(), 
                 entity.getName(), entity.getEsbp(), 
-                departmentConverter.toDto(entity.getDepartment())
+                departmentAdapter.toDto(entity.getDepartment())
         );
     }
 
@@ -35,7 +35,7 @@ public class SubjectConverter implements DtoEntityConverter<SubjectDto, Subject>
                 dto.getId(), 
                 dto.getName(), 
                 dto.getEsbp(),
-        departmentConverter.toEntity(dto.getDepartmentDto()));
+        departmentAdapter.toEntity(dto.getDepartmentDto()));
     }
     
 }

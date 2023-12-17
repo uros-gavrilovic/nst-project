@@ -2,21 +2,16 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package nst.springboot.restexample01.controller.domain;
+package nst.springboot.restexample01.domain;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
 
-/**
- *
- * @author student2
- */
+import java.util.Set;
+
+@Data
 @Entity
 @Table(name = "tbl_department")
 public class Department {
@@ -28,6 +23,12 @@ public class Department {
     @Size(min = 2, max = 10, message = "Broj znakova je od 2 do 10")
     @Column(name = "name")
     private String name;
+
+    @OneToOne
+    private Member supervisor;
+
+    @OneToOne
+    private Member secretary;
 
     public Department() {
     }

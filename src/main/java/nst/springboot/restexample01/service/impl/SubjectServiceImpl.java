@@ -2,18 +2,18 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package nst.springboot.restexample01.controller.service.impl;
+package nst.springboot.restexample01.service.impl;
 
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
-import nst.springboot.restexample01.controller.domain.Department;
-import nst.springboot.restexample01.controller.domain.Subject;
-import nst.springboot.restexample01.controller.repository.DepartmentRepository;
-import nst.springboot.restexample01.controller.repository.SubjectRepository;
-import nst.springboot.restexample01.controller.service.SubjectService;
-import nst.springboot.restexample01.converter.impl.DepartmentConverter;
-import nst.springboot.restexample01.converter.impl.SubjectConverter;
+
+import nst.springboot.restexample01.domain.Subject;
+import nst.springboot.restexample01.repository.DepartmentRepository;
+import nst.springboot.restexample01.repository.SubjectRepository;
+import nst.springboot.restexample01.service.SubjectService;
+import nst.springboot.restexample01.adapter.impl.DepartmentAdapter;
+import nst.springboot.restexample01.adapter.impl.SubjectAdapter;
 import nst.springboot.restexample01.dto.SubjectDto;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +24,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class SubjectServiceImpl implements SubjectService {
 
-    private DepartmentConverter departmentConverter;
-    private SubjectConverter subjectConverter;
+    private DepartmentAdapter departmentAdapter;
+    private SubjectAdapter subjectAdapter;
 
     private SubjectRepository subjectRepository;
     private DepartmentRepository departmentRepository;
@@ -33,11 +33,11 @@ public class SubjectServiceImpl implements SubjectService {
     public SubjectServiceImpl(
             SubjectRepository subjectRepository,
             DepartmentRepository departmentRepository,
-            DepartmentConverter departmentConverter, SubjectConverter subjectConverter) {
+            DepartmentAdapter departmentAdapter, SubjectAdapter subjectAdapter) {
         this.departmentRepository = departmentRepository;
         this.subjectRepository = subjectRepository;
-        this.departmentConverter = departmentConverter;
-        this.subjectConverter = subjectConverter;
+        this.departmentAdapter = departmentAdapter;
+        this.subjectAdapter = subjectAdapter;
     }
 
     @Override
@@ -49,7 +49,7 @@ public class SubjectServiceImpl implements SubjectService {
     public List<SubjectDto> getAll() {
         return subjectRepository
                 .findAll()
-                .stream().map(entity -> subjectConverter.toDto(entity))
+                .stream().map(entity -> subjectAdapter.toDto(entity))
                 .collect(Collectors.toList());
     }
 
@@ -76,7 +76,7 @@ public class SubjectServiceImpl implements SubjectService {
         if (subject.isPresent()) {
             //postoji
             Subject subj = subject.get();
-            return subjectConverter.toDto(subj);
+            return subjectAdapter.toDto(subj);
         } else {
             throw new Exception("Subject does not exist!");
         }

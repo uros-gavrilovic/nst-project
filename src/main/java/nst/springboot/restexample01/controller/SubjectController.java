@@ -6,7 +6,7 @@ package nst.springboot.restexample01.controller;
 
 import jakarta.validation.Valid;
 import java.util.List;
-import nst.springboot.restexample01.controller.service.SubjectService;
+import nst.springboot.restexample01.service.SubjectService;
 import nst.springboot.restexample01.dto.SubjectDto;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

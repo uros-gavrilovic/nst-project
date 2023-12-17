@@ -6,8 +6,8 @@ package nst.springboot.restexample01.controller;
 
 import jakarta.validation.Valid;
 import java.util.List;
-import nst.springboot.restexample01.controller.domain.Department;
-import nst.springboot.restexample01.controller.service.DepartmentService;
+import nst.springboot.restexample01.domain.Department;
+import nst.springboot.restexample01.service.DepartmentService;
 import nst.springboot.restexample01.dto.DepartmentDto;
 import nst.springboot.restexample01.exception.DepartmentAlreadyExistException;
 import nst.springboot.restexample01.exception.MyErrorDetails;

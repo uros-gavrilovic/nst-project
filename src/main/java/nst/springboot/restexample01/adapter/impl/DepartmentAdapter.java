@@ -2,10 +2,10 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package nst.springboot.restexample01.converter.impl;
+package nst.springboot.restexample01.adapter.impl;
 
-import nst.springboot.restexample01.controller.domain.Department;
-import nst.springboot.restexample01.converter.DtoEntityConverter;
+import nst.springboot.restexample01.domain.Department;
+import nst.springboot.restexample01.adapter.DtoEntityAdapter;
 import nst.springboot.restexample01.dto.DepartmentDto;
 import org.springframework.stereotype.Component;
 
@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
  */
 
 @Component
-public class DepartmentConverter implements DtoEntityConverter<DepartmentDto, Department>{
+public class DepartmentAdapter implements DtoEntityAdapter<DepartmentDto, Department> {
 
     @Override
     public DepartmentDto toDto(Department entity) {
