@@ -21,12 +21,41 @@
         <sqlFile path="dml/init-subject.sql" relativeToChangelogFile="true"/>
     </changeSet>
 
+    <!-- Create table ScientificField -->
+    <changeSet id="create-scientific-field" >
+        <sqlFile path="ddl/create-scientific-field.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <!-- Populate table ScientificField -->
+    <changeSet id="init-scientific-field" >
+        <sqlFile path="dml/init-scientific-field.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <!-- Create table AcademicTitle -->
+    <changeSet id="create-academic-title" >
+        <sqlFile path="ddl/create-academic-title.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <!-- Populate table AcademicTitle -->
+    <changeSet id="init-academic-title" >
+        <sqlFile path="dml/init-academic-title.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
+    <!-- Create table Education Title -->
+    <changeSet id="create-education-title" >
+        <sqlFile path="ddl/create-education-title.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <!-- Populate table Education Title -->
+    <changeSet id="init-education-title">
+        <sqlFile path="dml/init-education-title.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+
     <!-- Create table Member -->
-    <changeSet id="create-member" author="d.savic">
+    <changeSet id="create-member">
         <sqlFile path="ddl/create-member.sql" relativeToChangelogFile="true"/>
     </changeSet>
     <!-- Populate table Member -->
-    <changeSet id="init-member" author="d.savic">
+    <changeSet id="init-member" >
         <sqlFile path="dml/init-member.sql" relativeToChangelogFile="true"/>
     </changeSet>
+
+
 </databaseChangeLog>

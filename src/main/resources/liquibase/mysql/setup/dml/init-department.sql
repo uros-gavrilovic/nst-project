@@ -1,10 +1,8 @@
-insert into tbl_department(name) values ("department-1");
-insert into tbl_department(name) values ("department-2");
-insert into tbl_department(name) values ("department-3");
-insert into tbl_department(name) values ("department-4");
-insert into tbl_department(name) values ("department-5");
-insert into tbl_department(name) values ("department-6");
-insert into tbl_department(name) values ("department-7");
-insert into tbl_department(name) values ("department-8");
+insert into tbl_department(name, supervisor_id, secretary_id) values ("department-1");
 
 
+-- @OneToOne
+-- private Member supervisor;
+--
+--     @OneToOne
+-- private Member secretary;

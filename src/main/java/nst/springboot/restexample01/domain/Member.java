@@ -2,11 +2,16 @@ package nst.springboot.restexample01.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import nst.springboot.restexample01.domain.enums.AcademicTitle;
 import nst.springboot.restexample01.domain.enums.EducationTitle;
+import nst.springboot.restexample01.domain.enums.ScientificField;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 @Entity
 @Table(name = "tbl_member")
 public class Member {
@@ -24,17 +29,18 @@ public class Member {
 
     @NotEmpty
     @Enumerated(EnumType.STRING)
-    @Column(name = "academic_title")
+    @Column(name = "academic_title_id")
     private AcademicTitle academicTitle;
 
     @NotEmpty
     @Enumerated(EnumType.STRING)
-    @Column(name = "education_title")
+    @Column(name = "education_title_id")
     private EducationTitle educationTitle;
 
     @NotEmpty
-    @Column(name = "scientific_field")
-    private String scientificField;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "scientific_field_id")
+    private ScientificField scientificField;
 
     @ManyToOne
     @JoinColumn(name = "department_id")
