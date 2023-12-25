@@ -1,7 +1,14 @@
 package nst.springboot.restexample01.domain.enums;
 
-public enum EducationTitle {
-    BACHELOR,
-    MASTER,
-    DOCTOR
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
+public enum EducationTitle implements AbstractEnum {
+    BACHELOR("BACHELOR"),
+    MASTER("MASTER"),
+    DOCTOR("DOCTOR");
+
+    private final String value;
 }

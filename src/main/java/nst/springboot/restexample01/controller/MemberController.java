@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Pageable;
 
 @RestController
-@RequestMapping("/members")
+@RequestMapping("/member")
 public class MemberController {
 
     private final MemberService memberService;

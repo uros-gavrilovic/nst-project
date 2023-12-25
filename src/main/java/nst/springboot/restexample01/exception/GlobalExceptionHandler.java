@@ -31,6 +31,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
         System.out.println("nst.springboot.restexample01.controller.DepartmentController.handleException()");
         System.out.println("-----------pozvana metoda za obradu izuzetka u kontroleru -------------");
 
+        System.out.println("e.getMessage() = " + e.getMessage());
         MyErrorDetails myErrorDetails = new MyErrorDetails(e.getMessage());
 
         return new ResponseEntity<>(myErrorDetails, HttpStatus.NOT_FOUND);

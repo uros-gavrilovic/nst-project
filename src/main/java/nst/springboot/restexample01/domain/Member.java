@@ -9,6 +9,8 @@ import nst.springboot.restexample01.domain.enums.AcademicTitle;
 import nst.springboot.restexample01.domain.enums.EducationTitle;
 import nst.springboot.restexample01.domain.enums.ScientificField;
 
+import java.util.Set;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -28,21 +30,17 @@ public class Member {
     private String lastName;
 
     @NotEmpty
-    @Enumerated(EnumType.STRING)
     @Column(name = "academic_title_id")
     private AcademicTitle academicTitle;
 
     @NotEmpty
-    @Enumerated(EnumType.STRING)
     @Column(name = "education_title_id")
     private EducationTitle educationTitle;
 
     @NotEmpty
-    @Enumerated(EnumType.STRING)
     @Column(name = "scientific_field_id")
     private ScientificField scientificField;
 
-    @ManyToOne
-    @JoinColumn(name = "department_id")
-    private Department department;
+    @OneToMany(mappedBy = "member")
+    private Set<Association> departmentAssociations;
 }

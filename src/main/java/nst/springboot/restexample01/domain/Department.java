@@ -7,12 +7,16 @@ package nst.springboot.restexample01.domain;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Set;
 
 @Data
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "tbl_department")
 public class Department {
     @Id
@@ -24,34 +28,9 @@ public class Department {
     @Column(name = "name")
     private String name;
 
-    @OneToOne
-    private Member supervisor;
+    @OneToMany(mappedBy = "department")
+    private Set<Association> associations;
 
-    @OneToOne
-    private Member secretary;
-
-    public Department() {
-    }
-
-    public Department(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
+    @OneToMany(mappedBy = "department")
+    private Set<Assignment> assignments;
 }
