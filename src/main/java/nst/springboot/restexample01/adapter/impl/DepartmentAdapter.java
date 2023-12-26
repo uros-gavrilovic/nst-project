@@ -8,10 +8,12 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class DepartmentAdapter implements DtoEntityAdapter<DepartmentDto, Department> {
+    private MemberAdapter memberAdapter;
+
     @Autowired
-    private AssignmentAdapter assignmentAdapter;
-    @Autowired
-    private AssociationAdapter associationAdapter;
+    public DepartmentAdapter(MemberAdapter memberAdapter) {
+        this.memberAdapter = memberAdapter;
+    }
 
     @Override
     public DepartmentDto toDto(Department entity) {
@@ -19,11 +21,10 @@ public class DepartmentAdapter implements DtoEntityAdapter<DepartmentDto, Depart
 
         dto.setId(entity.getId());
         dto.setName(entity.getName());
-        entity.getAssignments().forEach(assignment -> {
-            dto.getAssignments().add(assignmentAdapter.toDto(assignment));
-        });
-        entity.getAssociations().forEach(association -> {
-            dto.getAssociations().add(associationAdapter.toDto(association));
+        dto.setSupervisor(memberAdapter.toDto(entity.getSupervisor()));
+        dto.setSecretary(memberAdapter.toDto(entity.getSecretary()));
+        entity.getMembers().forEach(member -> {
+            dto.getMembers().add(memberAdapter.toDto(member));
         });
 
         return dto;
@@ -35,11 +36,10 @@ public class DepartmentAdapter implements DtoEntityAdapter<DepartmentDto, Depart
 
         entity.setId(dto.getId());
         entity.setName(dto.getName());
-        dto.getAssignments().forEach(assignmentDto -> {
-            entity.getAssignments().add(assignmentAdapter.toEntity(assignmentDto));
-        });
-        dto.getAssociations().forEach(associationDto -> {
-            entity.getAssociations().add(associationAdapter.toEntity(associationDto));
+        entity.setSupervisor(memberAdapter.toEntity(dto.getSupervisor()));
+        entity.setSecretary(memberAdapter.toEntity(dto.getSecretary()));
+        dto.getMembers().forEach(memberDto -> {
+            entity.getMembers().add(memberAdapter.toEntity(memberDto));
         });
 
         return entity;

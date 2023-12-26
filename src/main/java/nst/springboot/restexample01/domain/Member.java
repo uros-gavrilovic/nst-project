@@ -9,8 +9,6 @@ import nst.springboot.restexample01.domain.enums.AcademicTitle;
 import nst.springboot.restexample01.domain.enums.EducationTitle;
 import nst.springboot.restexample01.domain.enums.ScientificField;
 
-import java.util.Set;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -41,6 +39,7 @@ public class Member {
     @Column(name = "scientific_field_id")
     private ScientificField scientificField;
 
-    @OneToMany(mappedBy = "member")
-    private Set<Association> departmentAssociations;
+    @ManyToOne
+    @JoinColumn(name = "department_id")
+    private Department department;
 }

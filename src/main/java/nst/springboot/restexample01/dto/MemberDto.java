@@ -21,14 +21,11 @@ public class MemberDto {
 
     private String lastName;
 
-    @Enumerated(EnumType.STRING)
     private AcademicTitle academicTitle;
 
-    @Enumerated(EnumType.STRING)
     private EducationTitle educationTitle;
 
-    @Enumerated(EnumType.STRING)
     private ScientificField scientificField;
 
-    private Set<AssociationDto> departmentAssociations;
+    private DepartmentDto department;
 }

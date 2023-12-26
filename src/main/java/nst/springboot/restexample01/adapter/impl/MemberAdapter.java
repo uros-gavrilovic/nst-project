@@ -12,11 +12,11 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class MemberAdapter implements DtoEntityAdapter<MemberDto, Member> {
-    private final AssociationAdapter associationAdapter;
+    private final DepartmentAdapter departmentAdapter;
 
     @Autowired
-    public MemberAdapter(@Lazy AssociationAdapter associationAdapter) {
-        this.associationAdapter = associationAdapter;
+    public MemberAdapter(@Lazy DepartmentAdapter departmentAdapter) {
+        this.departmentAdapter = departmentAdapter;
     }
 
     @Override
@@ -29,9 +29,7 @@ public class MemberAdapter implements DtoEntityAdapter<MemberDto, Member> {
         dto.setAcademicTitle(entity.getAcademicTitle());
         dto.setEducationTitle(entity.getEducationTitle());
         dto.setScientificField(entity.getScientificField());
-        entity.getDepartmentAssociations().forEach(association -> {
-            dto.getDepartmentAssociations().add(associationAdapter.toDto(association));
-        });
+        dto.setDepartment(departmentAdapter.toDto(entity.getDepartment()));
 
         return dto;
     }
@@ -46,9 +44,7 @@ public class MemberAdapter implements DtoEntityAdapter<MemberDto, Member> {
         entity.setAcademicTitle(dto.getAcademicTitle());
         entity.setEducationTitle(dto.getEducationTitle());
         entity.setScientificField(dto.getScientificField());
-        dto.getDepartmentAssociations().forEach(associationDto -> {
-            entity.getDepartmentAssociations().add(associationAdapter.toEntity(associationDto));
-        });
+        entity.setDepartment(departmentAdapter.toEntity(dto.getDepartment()));
 
         return entity;
     }

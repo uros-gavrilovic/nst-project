@@ -9,8 +9,6 @@ import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import nst.springboot.restexample01.domain.Assignment;
-import nst.springboot.restexample01.domain.Association;
 
 import java.io.Serializable;
 import java.util.Set;
@@ -25,8 +23,12 @@ public class DepartmentDto implements Serializable{
     @Size(min = 2,max = 10, message = "Broj znakova [2-10]")
     private String name;
 
-    private Set<AssociationDto> associations;
-
     private Set<AssignmentDto> assignments;
+
+    private MemberDto supervisor;
+
+    private MemberDto secretary;
+
+    private Set<MemberDto> members;
     
 }

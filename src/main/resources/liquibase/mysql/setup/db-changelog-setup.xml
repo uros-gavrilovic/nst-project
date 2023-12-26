@@ -3,59 +3,52 @@
                    xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
                         http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.4.xsd">
 
-<!--    &lt;!&ndash; kreiraj tabelu depratment&ndash;&gt;-->
-<!--    <changeSet id="create-department" author="d.savic">-->
-<!--        <sqlFile path="ddl/create-department.sql" relativeToChangelogFile="true"/>-->
-<!--    </changeSet>-->
-<!--    &lt;!&ndash; kreiraj tabelu subject&ndash;&gt;-->
-<!--    <changeSet id="create-subject" author="d.savic">-->
-<!--        <sqlFile path="ddl/create-subject.sql" relativeToChangelogFile="true"/>-->
-<!--    </changeSet>-->
+    <!-- DEPARTMENT -->
+    <changeSet id="create-department" author="d.savic">
+        <sqlFile path="ddl/create-department.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="init-department" author="d.savic">
+        <sqlFile path="dml/init-department.sql" relativeToChangelogFile="true"/>
+    </changeSet>
 
-<!--    &lt;!&ndash; popuni tabelu depratment&ndash;&gt;-->
-<!--    <changeSet id="init-department" author="d.savic">-->
-<!--        <sqlFile path="dml/init-department.sql" relativeToChangelogFile="true"/>-->
-<!--    </changeSet>-->
+    <!-- SUBJECT -->
+    <changeSet id="create-subject" author="d.savic">
+        <sqlFile path="ddl/create-subject.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="init-subject" author="d.savic">
+        <sqlFile path="dml/init-subject.sql" relativeToChangelogFile="true"/>
+    </changeSet>
 
-<!--    <changeSet id="init-subject" author="d.savic">-->
-<!--        <sqlFile path="dml/init-subject.sql" relativeToChangelogFile="true"/>-->
-<!--    </changeSet>-->
+    <!-- SCIENTIFIC FIELD -->
+    <changeSet id="create-scientific-field" >
+        <sqlFile path="ddl/create-scientific-field.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="init-scientific-field" >
+        <sqlFile path="dml/init-scientific-field.sql" relativeToChangelogFile="true"/>
+    </changeSet>
 
-<!--    &lt;!&ndash; Create table ScientificField &ndash;&gt;-->
-<!--    <changeSet id="create-scientific-field" >-->
-<!--        <sqlFile path="ddl/create-scientific-field.sql" relativeToChangelogFile="true"/>-->
-<!--    </changeSet>-->
-<!--    &lt;!&ndash; Populate table ScientificField &ndash;&gt;-->
-<!--    <changeSet id="init-scientific-field" >-->
-<!--        <sqlFile path="dml/init-scientific-field.sql" relativeToChangelogFile="true"/>-->
-<!--    </changeSet>-->
+    <!-- ACADEMIC TITLE -->
+    <changeSet id="create-academic-title" >
+        <sqlFile path="ddl/create-academic-title.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="init-academic-title" >
+        <sqlFile path="dml/init-academic-title.sql" relativeToChangelogFile="true"/>
+    </changeSet>
 
-<!--    &lt;!&ndash; Create table AcademicTitle &ndash;&gt;-->
-<!--    <changeSet id="create-academic-title" >-->
-<!--        <sqlFile path="ddl/create-academic-title.sql" relativeToChangelogFile="true"/>-->
-<!--    </changeSet>-->
-<!--    &lt;!&ndash; Populate table AcademicTitle &ndash;&gt;-->
-<!--    <changeSet id="init-academic-title" >-->
-<!--        <sqlFile path="dml/init-academic-title.sql" relativeToChangelogFile="true"/>-->
-<!--    </changeSet>-->
+    <!-- EDUCATION_TITLE -->
+    <changeSet id="create-education-title" >
+        <sqlFile path="ddl/create-education-title.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="init-education-title">
+        <sqlFile path="dml/init-education-title.sql" relativeToChangelogFile="true"/>
+    </changeSet>
 
-<!--    &lt;!&ndash; Create table Education Title &ndash;&gt;-->
-<!--    <changeSet id="create-education-title" >-->
-<!--        <sqlFile path="ddl/create-education-title.sql" relativeToChangelogFile="true"/>-->
-<!--    </changeSet>-->
-<!--    &lt;!&ndash; Populate table Education Title &ndash;&gt;-->
-<!--    <changeSet id="init-education-title">-->
-<!--        <sqlFile path="dml/init-education-title.sql" relativeToChangelogFile="true"/>-->
-<!--    </changeSet>-->
-
-<!--    &lt;!&ndash; Create table Member &ndash;&gt;-->
-<!--    <changeSet id="create-member">-->
-<!--        <sqlFile path="ddl/create-member.sql" relativeToChangelogFile="true"/>-->
-<!--    </changeSet>-->
-<!--    &lt;!&ndash; Populate table Member &ndash;&gt;-->
-<!--    <changeSet id="init-member" >-->
-<!--        <sqlFile path="dml/init-member.sql" relativeToChangelogFile="true"/>-->
-<!--    </changeSet>-->
-
+    <!-- MEMBER -->
+    <changeSet id="create-member">
+        <sqlFile path="ddl/create-member.sql" relativeToChangelogFile="true"/>
+    </changeSet>
+    <changeSet id="init-member" >
+        <sqlFile path="dml/init-member.sql" relativeToChangelogFile="true"/>
+    </changeSet>
 
 </databaseChangeLog>

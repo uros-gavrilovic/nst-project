@@ -28,9 +28,14 @@ public class Department {
     @Column(name = "name")
     private String name;
 
-    @OneToMany(mappedBy = "department")
-    private Set<Association> associations;
+    @OneToOne
+    @JoinColumn(name = "supervisor_id")
+    private Member supervisor;
+
+    @OneToOne
+    @JoinColumn(name = "secretary_id")
+    private Member secretary;
 
     @OneToMany(mappedBy = "department")
-    private Set<Assignment> assignments;
+    private Set<Member> members;
 }
