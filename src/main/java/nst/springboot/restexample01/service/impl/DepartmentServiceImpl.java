@@ -8,7 +8,10 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import nst.springboot.restexample01.domain.Department;
+import nst.springboot.restexample01.domain.Member;
+import nst.springboot.restexample01.domain.audit.DepartmentAudit;
 import nst.springboot.restexample01.repository.DepartmentRepository;
+import nst.springboot.restexample01.repository.audit.DepartmentAuditRepository;
 import nst.springboot.restexample01.service.DepartmentService;
 import nst.springboot.restexample01.adapter.impl.DepartmentAdapter;
 import nst.springboot.restexample01.dto.DepartmentDto;
@@ -24,12 +27,15 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     private DepartmentAdapter departmentAdapter;
     private DepartmentRepository departmentRepository;
+    private DepartmentAuditRepository departmentAuditRepository;
 
     public DepartmentServiceImpl(
             DepartmentRepository departmentRepository,
-            DepartmentAdapter departmentAdapter) {
+            DepartmentAdapter departmentAdapter,
+            DepartmentAuditRepository departmentAuditRepository) {
         this.departmentRepository = departmentRepository;
         this.departmentAdapter = departmentAdapter;
+        this.departmentAuditRepository = departmentAuditRepository;
     }
 
     @Override
@@ -83,6 +89,17 @@ public class DepartmentServiceImpl implements DepartmentService {
                 .findAll()
                 .stream().map(entity -> departmentAdapter.toDto(entity))
                 .collect(Collectors.toList());
+    }
+
+    private void logDepartmentAudit(Department department, String fieldName, Member oldValue, Member newValue){
+        DepartmentAudit audit = new DepartmentAudit();
+
+        audit.setEntityId(department.getId());
+        audit.setField(fieldName);
+        audit.setOldValue(Long.toString(oldValue.getId()));
+        audit.setNewValue(Long.toString(newValue.getId()));
+
+        departmentAuditRepository.save(audit);
     }
 
 }
