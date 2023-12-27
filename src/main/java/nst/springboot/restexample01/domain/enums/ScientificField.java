@@ -5,12 +5,10 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public enum ScientificField implements AbstractEnum {
-    MATHEMATICS("MATHEMATICS"),
-    PHYSICS("PHYSICS"),
-    COMPUTER_SCIENCE("COMPUTER_SCIENCE"),
-    HISTORY("HISTORY"),
-    OTHER("OTHER");
-
-    private final String value;
+public enum ScientificField  {
+    MATHEMATICS,
+    PHYSICS,
+    COMPUTER_SCIENCE,
+    HISTORY,
+    OTHER;
 }

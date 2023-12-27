@@ -17,7 +17,9 @@ public class DepartmentAdapter implements DtoEntityAdapter<DepartmentDto, Depart
 
     @Override
     public DepartmentDto toDto(Department entity) {
+        if (entity == null) return null;
         DepartmentDto dto = new DepartmentDto();
+        // Department(id=1, name=department, supervisor=null, secretary=null, members=[])
 
         dto.setId(entity.getId());
         dto.setName(entity.getName());
@@ -32,6 +34,7 @@ public class DepartmentAdapter implements DtoEntityAdapter<DepartmentDto, Depart
 
     @Override
     public Department toEntity(DepartmentDto dto) {
+        if (dto == null) return null;
         Department entity = new Department();
 
         entity.setId(dto.getId());

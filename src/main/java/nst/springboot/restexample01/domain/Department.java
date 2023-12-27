@@ -4,6 +4,9 @@
  */
 package nst.springboot.restexample01.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
@@ -39,5 +42,7 @@ public class Department {
     private Member secretary;
 
     @OneToMany(mappedBy = "department")
+    @JsonBackReference
+    @JsonIgnore
     private Set<Member> members;
 }

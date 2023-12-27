@@ -14,4 +14,5 @@ public enum MemberFields {
     public String getFieldName() {
         return this.fieldName;
     }
+
 }

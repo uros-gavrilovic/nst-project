@@ -38,10 +38,12 @@ public class DepartmentServiceImpl implements DepartmentService {
     public DepartmentServiceImpl(
             DepartmentRepository departmentRepository,
             DepartmentAdapter departmentAdapter,
-            DepartmentAuditRepository departmentAuditRepository) {
+            DepartmentAuditRepository departmentAuditRepository,
+            MemberAdapter memberAdapter) {
         this.departmentRepository = departmentRepository;
         this.departmentAdapter = departmentAdapter;
         this.departmentAuditRepository = departmentAuditRepository;
+        this.memberAdapter = memberAdapter;
     }
 
     @Override

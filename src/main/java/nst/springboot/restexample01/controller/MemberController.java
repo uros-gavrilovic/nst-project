@@ -1,5 +1,6 @@
 package nst.springboot.restexample01.controller;
 
+import nst.springboot.restexample01.domain.Member;
 import nst.springboot.restexample01.dto.MemberDto;
 import nst.springboot.restexample01.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,7 @@ public class MemberController {
 
     @GetMapping("/{id}")
     public ResponseEntity<MemberDto> getMemberById(@PathVariable Long id) throws Exception {
+        MemberDto memberDto = memberService.findById(id);
         return new ResponseEntity<>(memberService.findById(id), HttpStatus.OK);
     }
 

@@ -1,13 +1,12 @@
 package nst.springboot.restexample01.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import nst.springboot.restexample01.domain.enums.AcademicTitle;
-import nst.springboot.restexample01.domain.enums.EducationTitle;
-import nst.springboot.restexample01.domain.enums.ScientificField;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Data
@@ -30,18 +29,22 @@ public class Member {
     private String lastName;
 
     @NotEmpty
-    @Column(name = "academic_title_id")
-    private AcademicTitle academicTitle;
+    @ManyToOne
+    @JoinColumn(name = "academic_title_id")
+    private AcademicTitleEntity academicTitleEntity;
 
     @NotEmpty
-    @Column(name = "education_title_id")
-    private EducationTitle educationTitle;
+    @ManyToOne
+    @JoinColumn(name = "education_title_id")
+    private EducationTitleEntity educationTitleEntity;
 
     @NotEmpty
-    @Column(name = "scientific_field_id")
-    private ScientificField scientificField;
+    @ManyToOne
+    @JoinColumn(name = "scientific_field_id")
+    private ScientificFieldEntity scientificFieldEntity;
 
     @ManyToOne
+    @JsonManagedReference
     @JoinColumn(name = "department_id")
     private Department department;
 }

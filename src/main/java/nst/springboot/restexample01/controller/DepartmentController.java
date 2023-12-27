@@ -28,8 +28,6 @@ public class DepartmentController {
 
     public DepartmentController(DepartmentService departmentService) {
         this.departmentService = departmentService;
-        System.out.println("nst.springboot.restexample01.controller.DepartmentController.<init>()");
-        System.out.println("kreiran je konroller!");
     }
 
     //dodaj novi department

@@ -64,45 +64,65 @@ public class MemberServiceImpl implements MemberService {
         return memberAdapter.toDto(member);
     }
 
-    private Member getMemberById(Long id) {
-        return memberRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("Member does not exist!"));
-    }
-
     @Override
     public MemberDto updateAcademicTitle(Long memberID, AcademicTitle academicTitle) {
-        return updateQualifications(memberID, MemberFields.ACADEMIC_TITLE, academicTitle, Member::setAcademicTitle, Member::getAcademicTitle);
+        return null;
     }
 
     @Override
     public MemberDto updateEducationTitle(Long memberID, EducationTitle educationTitle) {
-        return updateQualifications(memberID, MemberFields.EDUCATION_TITLE, educationTitle, Member::setEducationTitle, Member::getEducationTitle);
+        return null;
     }
 
     @Override
     public MemberDto updateScientificField(Long memberID, ScientificField scientificField) {
-        return updateQualifications(memberID, MemberFields.SCIENTIFIC_FIELD, scientificField.to, Member::setScientificField, Member::getScientificField);
+        return null;
     }
 
-    private <T extends Enum<T>> MemberDto updateQualifications(Long memberID, MemberFields fieldName, String newQualification,
-                                                               BiConsumer<Member, T> setter, Function<String, T> converter) {
-        Optional<Member> optionalMember = memberRepository.findById(memberID);
-
-        if (optionalMember.isPresent()) {
-            Member member = optionalMember.get();
-
-            T oldValue = converter.apply(member.getQualification(fieldName));
-            T newValue = converter.apply(newQualification);
-
-            setter.accept(member, newValue);
-
-            member = memberRepository.save(member);
-            logMemberAudit(member, fieldName.getFieldName(), oldValue.toString(), newValue.toString());
-
-            return memberAdapter.toDto(member);
+    private Member getMemberById(Long id) {
+        Optional<Member> optionalMember = memberRepository.findById(id);
+        if(optionalMember.isPresent()) {
+            return optionalMember.get();
         } else {
             throw new RuntimeException("Member does not exist!");
         }
     }
+
+//    @Override
+//    public MemberDto updateAcademicTitle(Long memberID, AcademicTitle academicTitle) {
+//        return updateQualifications(memberID, MemberFields.ACADEMIC_TITLE, academicTitle, Member::setAcademicTitle, Member::getAcademicTitle);
+//    }
+//
+//    @Override
+//    public MemberDto updateEducationTitle(Long memberID, EducationTitle educationTitle) {
+//        return updateQualifications(memberID, MemberFields.EDUCATION_TITLE, educationTitle, Member::setEducationTitle, Member::getEducationTitle);
+//    }
+//
+//    @Override
+//    public MemberDto updateScientificField(Long memberID, ScientificField scientificField) {
+//        return updateQualifications(memberID, MemberFields.SCIENTIFIC_FIELD, scientificField.to, Member::setScientificField, Member::getScientificField);
+//    }
+//
+//    private <T extends Enum<T>> MemberDto updateQualifications(Long memberID, MemberFields fieldName, String newQualification,
+//                                                               BiConsumer<Member, T> setter, Function<T, String> converter) {
+//        Optional<Member> optionalMember = memberRepository.findById(memberID);
+//
+//        if (optionalMember.isPresent()) {
+//            Member member = optionalMember.get();
+//
+//            T oldValue = (T) member.getClass().getDeclaredFields()[fieldName.getFieldIndex()].get(member);
+//            T newValue = (T) Enum.valueOf(oldValue.getClass(), newQualification);
+//
+//            setter.accept(member, newValue);
+//
+//            member = memberRepository.save(member);
+//            logMemberAudit(member, fieldName.getFieldName(), oldValue.toString(), newValue.toString());
+//
+//            return memberAdapter.toDto(member);
+//        } else {
+//            throw new RuntimeException("Member does not exist!");
+//        }
+//    }
 
     private void logMemberAudit(Member member, String fieldName, String oldValue, String newValue) {
         MemberAudit audit = new MemberAudit();
