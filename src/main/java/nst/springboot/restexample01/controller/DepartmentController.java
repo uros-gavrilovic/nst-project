@@ -7,21 +7,14 @@ package nst.springboot.restexample01.controller;
 import jakarta.validation.Valid;
 import java.util.List;
 import nst.springboot.restexample01.domain.Department;
+import nst.springboot.restexample01.dto.MemberDto;
 import nst.springboot.restexample01.service.DepartmentService;
 import nst.springboot.restexample01.dto.DepartmentDto;
 import nst.springboot.restexample01.exception.DepartmentAlreadyExistException;
 import nst.springboot.restexample01.exception.MyErrorDetails;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  *
@@ -45,6 +38,18 @@ public class DepartmentController {
         //ResponseEntity
         DepartmentDto deptDto = departmentService.save(departmentDto);
         return new ResponseEntity<>(deptDto, HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}/set-supervisor")
+    public ResponseEntity<DepartmentDto> setSupervisor(@PathVariable("id") Long id, @RequestBody MemberDto memberDto) throws Exception {
+        DepartmentDto deptDto = departmentService.updateSupervisor(id, memberDto);
+        return new ResponseEntity<>(deptDto, HttpStatus.OK);
+    }
+
+    @PutMapping("/{id}/set-secretary")
+    public ResponseEntity<DepartmentDto> setSecretary(@PathVariable("id") Long id, @RequestBody MemberDto memberDto) throws Exception {
+        DepartmentDto deptDto = departmentService.updateSecretary(id, memberDto);
+        return new ResponseEntity<>(deptDto, HttpStatus.OK);
     }
 
    

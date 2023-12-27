@@ -6,16 +6,21 @@ package nst.springboot.restexample01.service.impl;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
+
+import nst.springboot.restexample01.adapter.impl.MemberAdapter;
 import nst.springboot.restexample01.domain.Department;
 import nst.springboot.restexample01.domain.Member;
 import nst.springboot.restexample01.domain.audit.DepartmentAudit;
+import nst.springboot.restexample01.dto.MemberDto;
 import nst.springboot.restexample01.repository.DepartmentRepository;
 import nst.springboot.restexample01.repository.audit.DepartmentAuditRepository;
 import nst.springboot.restexample01.service.DepartmentService;
 import nst.springboot.restexample01.adapter.impl.DepartmentAdapter;
 import nst.springboot.restexample01.dto.DepartmentDto;
 import nst.springboot.restexample01.exception.DepartmentAlreadyExistException;
+import nst.springboot.restexample01.util.constants.DepartmentFields;
 import org.springframework.stereotype.Service;
 
 /**
@@ -26,6 +31,7 @@ import org.springframework.stereotype.Service;
 public class DepartmentServiceImpl implements DepartmentService {
 
     private DepartmentAdapter departmentAdapter;
+    private MemberAdapter memberAdapter;
     private DepartmentRepository departmentRepository;
     private DepartmentAuditRepository departmentAuditRepository;
 
@@ -91,6 +97,35 @@ public class DepartmentServiceImpl implements DepartmentService {
                 .collect(Collectors.toList());
     }
 
+    @Override
+    public DepartmentDto updateSupervisor(Long id, MemberDto supervisor) {
+        return updateManagment(id, supervisor, "supervisor", Department::setSupervisor);
+    }
+
+    @Override
+    public DepartmentDto updateSecretary(Long id, MemberDto secretary) {
+        return updateManagment(id, secretary, "secretary", Department::setSecretary);
+    }
+
+    private DepartmentDto updateManagment(Long id, MemberDto memberDto, String fieldName, BiConsumer<Department, Member> memberSetter) {
+        Optional<Department> optionalDepartment = departmentRepository.findById(id);
+        if (optionalDepartment.isPresent()) {
+            Department department = optionalDepartment.get();
+
+            Member oldMember = fieldName.equals(DepartmentFields.SUPERVISOR.getFieldName()) ? department.getSupervisor() : department.getSecretary();
+            Member newMember = memberAdapter.toEntity(memberDto);
+
+            memberSetter.accept(department, newMember);
+
+            department = departmentRepository.save(department);
+            logDepartmentAudit(department, fieldName, oldMember, newMember);
+
+            return departmentAdapter.toDto(department);
+        } else {
+            throw new RuntimeException("Department does not exist!");
+        }
+    }
+
     private void logDepartmentAudit(Department department, String fieldName, Member oldValue, Member newValue){
         DepartmentAudit audit = new DepartmentAudit();
 
@@ -101,5 +136,4 @@ public class DepartmentServiceImpl implements DepartmentService {
 
         departmentAuditRepository.save(audit);
     }
-
 }
