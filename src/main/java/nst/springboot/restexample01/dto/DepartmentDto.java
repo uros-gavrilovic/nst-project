@@ -7,13 +7,16 @@ package nst.springboot.restexample01.dto;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class DepartmentDto implements Serializable{
@@ -29,6 +32,7 @@ public class DepartmentDto implements Serializable{
 
     private MemberDto secretary;
 
-    private Set<MemberDto> members;
+    @Builder.Default
+    private Set<MemberDto> members = new HashSet<>();
     
 }

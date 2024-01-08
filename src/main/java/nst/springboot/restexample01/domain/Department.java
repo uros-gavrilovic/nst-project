@@ -11,13 +11,16 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@Builder
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
@@ -44,5 +47,6 @@ public class Department {
     @OneToMany(mappedBy = "department")
     @JsonBackReference
     @JsonIgnore
-    private Set<Member> members;
+    @Builder.Default
+    private Set<Member> members = new HashSet<>();
 }

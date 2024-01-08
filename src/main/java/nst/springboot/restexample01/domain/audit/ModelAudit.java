@@ -7,6 +7,9 @@ import jakarta.persistence.MappedSuperclass;
 import lombok.Data;
 import lombok.Getter;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 @Data
 @MappedSuperclass
 public abstract class ModelAudit {
@@ -14,7 +17,7 @@ public abstract class ModelAudit {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long entityId; // Reference to the original entity id
+    private Long entityId;
 
     private String field;
 
@@ -22,7 +25,5 @@ public abstract class ModelAudit {
 
     private String newValue;
 
-    private Long rev;
-
-    private int revType;
+    private LocalDateTime revDateTime;
 }

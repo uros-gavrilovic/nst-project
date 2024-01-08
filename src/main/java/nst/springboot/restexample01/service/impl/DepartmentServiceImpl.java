@@ -24,22 +24,18 @@ import nst.springboot.restexample01.util.constants.DepartmentFields;
 import org.springframework.stereotype.Service;
 
 /**
- *
  * @author student2
  */
 @Service
 public class DepartmentServiceImpl implements DepartmentService {
 
-    private DepartmentAdapter departmentAdapter;
-    private MemberAdapter memberAdapter;
-    private DepartmentRepository departmentRepository;
-    private DepartmentAuditRepository departmentAuditRepository;
+    private final DepartmentAdapter departmentAdapter;
+    private final MemberAdapter memberAdapter;
+    private final DepartmentRepository departmentRepository;
+    private final DepartmentAuditRepository departmentAuditRepository;
 
-    public DepartmentServiceImpl(
-            DepartmentRepository departmentRepository,
-            DepartmentAdapter departmentAdapter,
-            DepartmentAuditRepository departmentAuditRepository,
-            MemberAdapter memberAdapter) {
+    public DepartmentServiceImpl(DepartmentRepository departmentRepository, DepartmentAdapter departmentAdapter,
+                                 DepartmentAuditRepository departmentAuditRepository, MemberAdapter memberAdapter) {
         this.departmentRepository = departmentRepository;
         this.departmentAdapter = departmentAdapter;
         this.departmentAuditRepository = departmentAuditRepository;
@@ -76,7 +72,8 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public void update(DepartmentDto department) throws Exception {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        throw new UnsupportedOperationException(
+                "Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
 
     @Override
@@ -93,49 +90,71 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public List<DepartmentDto> getAll() {
-        return departmentRepository
-                .findAll()
-                .stream().map(entity -> departmentAdapter.toDto(entity))
+        return departmentRepository.findAll()
+                .stream()
+                .map(entity -> departmentAdapter.toDto(entity))
                 .collect(Collectors.toList());
     }
 
     @Override
     public DepartmentDto updateSupervisor(Long id, MemberDto supervisor) {
-        return updateManagment(id, supervisor, "supervisor", Department::setSupervisor);
-    }
-
-    @Override
-    public DepartmentDto updateSecretary(Long id, MemberDto secretary) {
-        return updateManagment(id, secretary, "secretary", Department::setSecretary);
-    }
-
-    private DepartmentDto updateManagment(Long id, MemberDto memberDto, String fieldName, BiConsumer<Department, Member> memberSetter) {
         Optional<Department> optionalDepartment = departmentRepository.findById(id);
         if (optionalDepartment.isPresent()) {
             Department department = optionalDepartment.get();
 
-            Member oldMember = fieldName.equals(DepartmentFields.SUPERVISOR.getFieldName()) ? department.getSupervisor() : department.getSecretary();
-            Member newMember = memberAdapter.toEntity(memberDto);
+            Member oldSupervisor = department.getSupervisor();
+            Member newSupervisor = memberAdapter.toEntity(supervisor);
 
-            memberSetter.accept(department, newMember);
+            department.setSupervisor(newSupervisor);
 
-            department = departmentRepository.save(department);
-            logDepartmentAudit(department, fieldName, oldMember, newMember);
-
-            return departmentAdapter.toDto(department);
+            logDepartmentAudit(department, "supervisor", oldSupervisor, newSupervisor);
+            return departmentAdapter.toDto(departmentRepository.save(department));
         } else {
             throw new RuntimeException("Department does not exist!");
         }
     }
 
-    private void logDepartmentAudit(Department department, String fieldName, Member oldValue, Member newValue){
+    @Override
+    public DepartmentDto updateSecretary(Long id, MemberDto secretary) {
+        Optional<Department> optionalDepartment = departmentRepository.findById(id);
+        if (optionalDepartment.isPresent()) {
+            Department department = optionalDepartment.get();
+
+            Member oldSecretary = department.getSecretary();
+            Member newSecretary = memberAdapter.toEntity(secretary);
+
+            department.setSecretary(newSecretary);
+
+            logDepartmentAudit(department, "secretary", oldSecretary, newSecretary);
+            return departmentAdapter.toDto(departmentRepository.save(department));
+        } else {
+            throw new RuntimeException("Department does not exist!");
+        }
+    }
+
+    @Override
+    public List<DepartmentAudit> getHistory(Long id, String field) {
+        try {
+            String fieldName = DepartmentFields.valueOf(field.toUpperCase()).getFieldName().toLowerCase();
+            return departmentAuditRepository.findByEntityIdAndFieldOrderByRevDateTimeDesc(id, fieldName);
+        } catch (IllegalArgumentException e) {
+            throw new IllegalArgumentException("Invalid field: " + field);
+        }
+    }
+
+    private void logDepartmentAudit(Department department, String fieldName, Member oldValue, Member newValue) {
         DepartmentAudit audit = new DepartmentAudit();
 
         audit.setEntityId(department.getId());
         audit.setField(fieldName);
-        audit.setOldValue(Long.toString(oldValue.getId()));
-        audit.setNewValue(Long.toString(newValue.getId()));
+        audit.setOldValue(getIdAsString(oldValue));
+        audit.setNewValue(getIdAsString(newValue));
+        audit.setRevDateTime(java.time.LocalDateTime.now());
 
         departmentAuditRepository.save(audit);
+    }
+
+    private String getIdAsString(Member member) {
+        return Optional.ofNullable(member).map(Member::getId).map(Object::toString).orElse(null);
     }
 }

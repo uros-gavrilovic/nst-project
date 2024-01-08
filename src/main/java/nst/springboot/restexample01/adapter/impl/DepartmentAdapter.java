@@ -6,9 +6,11 @@ import nst.springboot.restexample01.dto.DepartmentDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import java.util.Optional;
+
 @Component
 public class DepartmentAdapter implements DtoEntityAdapter<DepartmentDto, Department> {
-    private MemberAdapter memberAdapter;
+    private final MemberAdapter memberAdapter;
 
     @Autowired
     public DepartmentAdapter(MemberAdapter memberAdapter) {
@@ -19,7 +21,6 @@ public class DepartmentAdapter implements DtoEntityAdapter<DepartmentDto, Depart
     public DepartmentDto toDto(Department entity) {
         if (entity == null) return null;
         DepartmentDto dto = new DepartmentDto();
-        // Department(id=1, name=department, supervisor=null, secretary=null, members=[])
 
         dto.setId(entity.getId());
         dto.setName(entity.getName());
@@ -41,11 +42,11 @@ public class DepartmentAdapter implements DtoEntityAdapter<DepartmentDto, Depart
         entity.setName(dto.getName());
         entity.setSupervisor(memberAdapter.toEntity(dto.getSupervisor()));
         entity.setSecretary(memberAdapter.toEntity(dto.getSecretary()));
-        dto.getMembers().forEach(memberDto -> {
-            entity.getMembers().add(memberAdapter.toEntity(memberDto));
-        });
+        Optional.ofNullable(dto.getMembers())
+                .ifPresent(members -> members.forEach(
+                        memberDto -> entity.getMembers().add(memberAdapter.toEntity(memberDto))));
 
         return entity;
     }
-    
+
 }

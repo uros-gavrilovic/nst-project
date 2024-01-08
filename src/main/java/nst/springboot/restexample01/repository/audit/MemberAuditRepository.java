@@ -5,5 +5,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface MemberAuditRepository extends JpaRepository<MemberAudit, Long> {
-    List<MemberAudit> findByEntityIdAndFieldOrderByRevDesc(Long entityId, String field);
+    List<MemberAudit> findByEntityIdAndFieldOrderByRevDateTimeDesc(Long entityId, String field);
 }

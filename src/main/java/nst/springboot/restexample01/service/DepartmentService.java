@@ -7,6 +7,7 @@ package nst.springboot.restexample01.service;
 import java.util.List;
 
 import nst.springboot.restexample01.domain.Department;
+import nst.springboot.restexample01.domain.audit.DepartmentAudit;
 import nst.springboot.restexample01.dto.DepartmentDto;
 import nst.springboot.restexample01.dto.MemberDto;
 
@@ -23,4 +24,5 @@ public interface DepartmentService {
 
     DepartmentDto updateSupervisor(Long id, MemberDto supervisor);
     DepartmentDto updateSecretary(Long id, MemberDto secretary);
+    List<DepartmentAudit> getHistory(Long id, String field);
 }

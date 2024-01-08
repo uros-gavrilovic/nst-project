@@ -4,6 +4,5 @@ import nst.springboot.restexample01.domain.audit.DepartmentAudit;
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 public interface DepartmentAuditRepository extends JpaRepository<DepartmentAudit, Long> {
-
-    List<DepartmentAudit> findByEntityIdAndFieldOrderByRevDesc(Long entityId, String field);
+    List<DepartmentAudit> findByEntityIdAndFieldOrderByRevDateTimeDesc(Long entityId, String field);
 }
