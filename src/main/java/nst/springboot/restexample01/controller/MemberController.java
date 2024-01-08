@@ -54,10 +54,10 @@ public class MemberController {
     }
 
     @PutMapping("/{id}/update-qualifications")
-    public ResponseEntity<Void> updateQualifications(@PathVariable Long id,
+    public ResponseEntity<MemberDto> updateQualifications(@PathVariable Long id,
                                                      @RequestParam(required = true) String qualificationType,
                                                      @RequestBody String newQualification) throws Exception {
-        memberService.updateQualifications(id, qualificationType, newQualification);
-        return new ResponseEntity<>(HttpStatus.OK);
+        MemberDto updatedMemberDto = memberService.updateQualifications(id, qualificationType, newQualification);
+        return new ResponseEntity<>(updatedMemberDto, HttpStatus.OK);
     }
 }

@@ -35,7 +35,6 @@ public class MemberAdapter implements DtoEntityAdapter<MemberDto, Member> {
         dto.setScientificField(entity.getScientificFieldEntity().getScientificField());
         dto.setDepartment(departmentAdapter.toDto(entity.getDepartment()));
 
-        System.out.println("ovde je ok");
         return dto;
     }
 

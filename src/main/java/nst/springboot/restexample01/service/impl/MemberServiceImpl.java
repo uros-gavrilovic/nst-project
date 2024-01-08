@@ -94,15 +94,13 @@ public class MemberServiceImpl implements MemberService {
 
             switch (qualificationType) {
                 case ACADEMIC_TITLE:
-                    AcademicTitleEntity academicTitleEntity =
-                            academicTitleEntityService.findByAcademicTitle(value);
+                    AcademicTitleEntity academicTitleEntity = academicTitleEntityService.findByAcademicTitle(value);
                     oldValue = member.getAcademicTitleEntity().getAcademicTitle().toString();
                     fieldName = MemberFields.ACADEMIC_TITLE;
                     member.setAcademicTitleEntity(academicTitleEntity);
                     break;
                 case EDUCATION_TITLE:
-                    EducationTitleEntity educationTitleEntity =
-                            educationTitleEntityService.findByEducationTitle(value);
+                    EducationTitleEntity educationTitleEntity = educationTitleEntityService.findByEducationTitle(value);
                     oldValue = member.getEducationTitleEntity().getEducationTitle().toString();
                     fieldName = MemberFields.EDUCATION_TITLE;
                     member.setEducationTitleEntity(educationTitleEntity);
@@ -115,12 +113,6 @@ public class MemberServiceImpl implements MemberService {
                     member.setScientificFieldEntity(scientificFieldEntity);
                     break;
             }
-
-            System.out.println("Field name: " + fieldName);
-            System.out.println("Old value: " + oldValue);
-            System.out.println("New value: " + newValue);
-            System.out.println(member);
-
             member = memberRepository.save(member);
             logMemberAudit(member, fieldName, oldValue, newValue);
             return memberAdapter.toDto(member);

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -28,17 +29,17 @@ public class Member {
     @Column(name = "last_name")
     private String lastName;
 
-    @NotEmpty
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "academic_title_id")
     private AcademicTitleEntity academicTitleEntity;
 
-    @NotEmpty
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "education_title_id")
     private EducationTitleEntity educationTitleEntity;
 
-    @NotEmpty
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "scientific_field_id")
     private ScientificFieldEntity scientificFieldEntity;
