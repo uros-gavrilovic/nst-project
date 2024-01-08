@@ -1,8 +1,7 @@
-insert into tbl_department(name, supervisor_id, secretary_id) values ("department-1");
-
-
--- @OneToOne
--- private Member supervisor;
---
---     @OneToOne
--- private Member secretary;
+INSERT INTO tbl_department(name)
+VALUES
+    ("department-1"),
+    ("department-2"),
+    ("department-3"),
+    ("department-4"),
+    ("department-5");

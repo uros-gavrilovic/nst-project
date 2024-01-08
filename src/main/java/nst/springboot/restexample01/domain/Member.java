@@ -1,19 +1,20 @@
 package nst.springboot.restexample01.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import nst.springboot.restexample01.domain.enums.AcademicTitle;
-import nst.springboot.restexample01.domain.enums.EducationTitle;
-import nst.springboot.restexample01.domain.enums.ScientificField;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "tbl_member")
+@EntityListeners(AuditingEntityListener.class)
 public class Member {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,21 +29,22 @@ public class Member {
     private String lastName;
 
     @NotEmpty
-    @Enumerated(EnumType.STRING)
-    @Column(name = "academic_title_id")
-    private AcademicTitle academicTitle;
+    @ManyToOne
+    @JoinColumn(name = "academic_title_id")
+    private AcademicTitleEntity academicTitleEntity;
 
     @NotEmpty
-    @Enumerated(EnumType.STRING)
-    @Column(name = "education_title_id")
-    private EducationTitle educationTitle;
+    @ManyToOne
+    @JoinColumn(name = "education_title_id")
+    private EducationTitleEntity educationTitleEntity;
 
     @NotEmpty
-    @Enumerated(EnumType.STRING)
-    @Column(name = "scientific_field_id")
-    private ScientificField scientificField;
+    @ManyToOne
+    @JoinColumn(name = "scientific_field_id")
+    private ScientificFieldEntity scientificFieldEntity;
 
     @ManyToOne
+    @JsonManagedReference
     @JoinColumn(name = "department_id")
     private Department department;
 }

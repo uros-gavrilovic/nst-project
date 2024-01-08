@@ -1,5 +1,7 @@
 package nst.springboot.restexample01.controller;
 
+import nst.springboot.restexample01.domain.Member;
+import nst.springboot.restexample01.domain.enums.AcademicTitle;
 import nst.springboot.restexample01.dto.MemberDto;
 import nst.springboot.restexample01.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Pageable;
 
 @RestController
-@RequestMapping("/members")
+@RequestMapping("/member")
 public class MemberController {
 
     private final MemberService memberService;
@@ -30,6 +32,7 @@ public class MemberController {
 
     @GetMapping("/{id}")
     public ResponseEntity<MemberDto> getMemberById(@PathVariable Long id) throws Exception {
+        MemberDto memberDto = memberService.findById(id);
         return new ResponseEntity<>(memberService.findById(id), HttpStatus.OK);
     }
 
@@ -48,5 +51,13 @@ public class MemberController {
     public ResponseEntity<Void> deleteMember(@PathVariable Long id) throws Exception {
         memberService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PutMapping("/{id}/update-qualifications")
+    public ResponseEntity<Void> updateQualifications(@PathVariable Long id,
+                                                     @RequestParam(required = true) String qualificationType,
+                                                     @RequestBody String newQualification) throws Exception {
+        memberService.updateQualifications(id, qualificationType, newQualification);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }

@@ -1,30 +1,52 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package nst.springboot.restexample01.adapter.impl;
 
 import nst.springboot.restexample01.domain.Department;
 import nst.springboot.restexample01.adapter.DtoEntityAdapter;
 import nst.springboot.restexample01.dto.DepartmentDto;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-/**
- *
- * @author student2
- */
+import java.util.Optional;
 
 @Component
 public class DepartmentAdapter implements DtoEntityAdapter<DepartmentDto, Department> {
+    private final MemberAdapter memberAdapter;
+
+    @Autowired
+    public DepartmentAdapter(MemberAdapter memberAdapter) {
+        this.memberAdapter = memberAdapter;
+    }
 
     @Override
     public DepartmentDto toDto(Department entity) {
-        return new DepartmentDto(entity.getId(), entity.getName());
+        if (entity == null) return null;
+        DepartmentDto dto = new DepartmentDto();
+
+        dto.setId(entity.getId());
+        dto.setName(entity.getName());
+        dto.setSupervisor(memberAdapter.toDto(entity.getSupervisor()));
+        dto.setSecretary(memberAdapter.toDto(entity.getSecretary()));
+        entity.getMembers().forEach(member -> {
+            dto.getMembers().add(memberAdapter.toDto(member));
+        });
+
+        return dto;
     }
 
     @Override
     public Department toEntity(DepartmentDto dto) {
-        return new Department(dto.getId(), dto.getName());
+        if (dto == null) return null;
+        Department entity = new Department();
+
+        entity.setId(dto.getId());
+        entity.setName(dto.getName());
+        entity.setSupervisor(memberAdapter.toEntity(dto.getSupervisor()));
+        entity.setSecretary(memberAdapter.toEntity(dto.getSecretary()));
+        Optional.ofNullable(dto.getMembers())
+                .ifPresent(members -> members.forEach(
+                        memberDto -> entity.getMembers().add(memberAdapter.toEntity(memberDto))));
+
+        return entity;
     }
-    
+
 }

@@ -4,16 +4,28 @@
  */
 package nst.springboot.restexample01.domain;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
+import java.util.HashSet;
 import java.util.Set;
 
 @Data
+@Builder
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "tbl_department")
+@EntityListeners(AuditingEntityListener.class)
 public class Department {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,33 +37,16 @@ public class Department {
     private String name;
 
     @OneToOne
+    @JoinColumn(name = "supervisor_id")
     private Member supervisor;
 
     @OneToOne
+    @JoinColumn(name = "secretary_id")
     private Member secretary;
 
-    public Department() {
-    }
-
-    public Department(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-    
+    @OneToMany(mappedBy = "department")
+    @JsonBackReference
+    @JsonIgnore
+    @Builder.Default
+    private Set<Member> members = new HashSet<>();
 }

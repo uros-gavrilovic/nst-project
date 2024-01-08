@@ -1,14 +1,18 @@
 package nst.springboot.restexample01.dto;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotEmpty;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import nst.springboot.restexample01.domain.Department;
+import nst.springboot.restexample01.domain.AcademicTitleEntity;
+import nst.springboot.restexample01.domain.EducationTitleEntity;
+import nst.springboot.restexample01.domain.ScientificFieldEntity;
 import nst.springboot.restexample01.domain.enums.AcademicTitle;
 import nst.springboot.restexample01.domain.enums.EducationTitle;
 import nst.springboot.restexample01.domain.enums.ScientificField;
+
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -16,7 +20,9 @@ import nst.springboot.restexample01.domain.enums.ScientificField;
 public class MemberDto {
     private Long id;
 
-    private String fullName;
+    private String firstName;
+
+    private String lastName;
 
     private AcademicTitle academicTitle;
 
@@ -25,5 +31,4 @@ public class MemberDto {
     private ScientificField scientificField;
 
     private DepartmentDto department;
-
 }

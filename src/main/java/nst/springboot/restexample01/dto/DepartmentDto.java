@@ -6,12 +6,19 @@ package nst.springboot.restexample01.dto;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
-import java.io.Serializable;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
-/**
- *
- * @author student2
- */
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class DepartmentDto implements Serializable{
     private Long id;
     
@@ -19,28 +26,13 @@ public class DepartmentDto implements Serializable{
     @Size(min = 2,max = 10, message = "Broj znakova [2-10]")
     private String name;
 
-    public DepartmentDto() {
-    }
+    private Set<AssignmentDto> assignments;
 
-    public DepartmentDto(Long id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+    private MemberDto supervisor;
 
-    public Long getId() {
-        return id;
-    }
+    private MemberDto secretary;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
+    @Builder.Default
+    private Set<MemberDto> members = new HashSet<>();
     
 }
