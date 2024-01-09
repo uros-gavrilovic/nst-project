@@ -1,0 +1,157 @@
+/*
+SQLyog Ultimate v10.00 Beta1
+MySQL - 5.5.5-10.4.32-MariaDB : Database - nst2023
+*********************************************************************
+*/
+
+/*!40101 SET NAMES utf8 */;
+
+/*!40101 SET SQL_MODE=''*/;
+
+/*!40014 SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0 */;
+/*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
+/*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
+/*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+CREATE DATABASE /*!32312 IF NOT EXISTS*/`nst2023` /*!40100 DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci */;
+
+USE `nst2023`;
+
+/*Table structure for table `tbl_academic_title` */
+
+DROP TABLE IF EXISTS `tbl_academic_title`;
+
+CREATE TABLE `tbl_academic_title` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `academic_title` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `tbl_academic_title` */
+
+insert  into `tbl_academic_title`(`id`,`academic_title`) values (1,'PROFESSOR'),(2,'ASSOCIATE_PROFESSOR'),(3,'ASSISTANT_PROFESSOR');
+
+/*Table structure for table `tbl_department` */
+
+DROP TABLE IF EXISTS `tbl_department`;
+
+CREATE TABLE `tbl_department` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `name` varchar(10) DEFAULT NULL,
+  `secretary_id` bigint(20) DEFAULT NULL,
+  `supervisor_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `UK_4qoo1yx1mwlnlkd2bnm8y4sgb` (`secretary_id`),
+  UNIQUE KEY `UK_bev8uxonoq2rwl4o4idn2l6mu` (`supervisor_id`),
+  CONSTRAINT `FKaoma0cnalhsqv25mcstm4jip0` FOREIGN KEY (`supervisor_id`) REFERENCES `tbl_member` (`id`),
+  CONSTRAINT `FKjjaa1bo8mhb2jj1m9n13ualgd` FOREIGN KEY (`secretary_id`) REFERENCES `tbl_member` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `tbl_department` */
+
+insert  into `tbl_department`(`id`,`name`,`secretary_id`,`supervisor_id`) values (1,'department',3,2),(2,'department',NULL,NULL),(3,'department',NULL,NULL),(4,'department',NULL,NULL),(5,'department',NULL,NULL);
+
+/*Table structure for table `tbl_department_audit` */
+
+DROP TABLE IF EXISTS `tbl_department_audit`;
+
+CREATE TABLE `tbl_department_audit` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `entity_id` bigint(20) DEFAULT NULL,
+  `field` varchar(255) DEFAULT NULL,
+  `new_value` varchar(255) DEFAULT NULL,
+  `old_value` varchar(255) DEFAULT NULL,
+  `rev_date_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `tbl_department_audit` */
+
+insert  into `tbl_department_audit`(`id`,`entity_id`,`field`,`new_value`,`old_value`,`rev_date_time`) values (24,1,'supervisor','1',NULL,'2024-01-09 22:38:48'),(25,1,'secretary','3',NULL,'2024-01-09 22:38:57'),(26,1,'supervisor','2','1','2024-01-09 22:39:49');
+
+/*Table structure for table `tbl_education_title` */
+
+DROP TABLE IF EXISTS `tbl_education_title`;
+
+CREATE TABLE `tbl_education_title` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `education_title` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `tbl_education_title` */
+
+insert  into `tbl_education_title`(`id`,`education_title`) values (1,'BACHELOR'),(2,'MASTER'),(3,'DOCTOR');
+
+/*Table structure for table `tbl_member` */
+
+DROP TABLE IF EXISTS `tbl_member`;
+
+CREATE TABLE `tbl_member` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `academic_title_id` bigint(20) DEFAULT NULL,
+  `education_title_id` bigint(20) DEFAULT NULL,
+  `first_name` varchar(255) DEFAULT NULL,
+  `last_name` varchar(255) DEFAULT NULL,
+  `scientific_field_id` bigint(20) DEFAULT NULL,
+  `department_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FK7sb2n8qmgjeayrxqotm8pd2de` (`department_id`),
+  CONSTRAINT `FK7sb2n8qmgjeayrxqotm8pd2de` FOREIGN KEY (`department_id`) REFERENCES `tbl_department` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `tbl_member` */
+
+insert  into `tbl_member`(`id`,`academic_title_id`,`education_title_id`,`first_name`,`last_name`,`scientific_field_id`,`department_id`) values (1,1,1,'John','Doe',5,1),(2,2,3,'Jane','Smith',3,1),(3,1,3,'Alice','Johnson',1,2);
+
+/*Table structure for table `tbl_member_audit` */
+
+DROP TABLE IF EXISTS `tbl_member_audit`;
+
+CREATE TABLE `tbl_member_audit` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `entity_id` bigint(20) DEFAULT NULL,
+  `field` varchar(255) DEFAULT NULL,
+  `new_value` varchar(255) DEFAULT NULL,
+  `old_value` varchar(255) DEFAULT NULL,
+  `rev_date_time` datetime DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `tbl_member_audit` */
+
+insert  into `tbl_member_audit`(`id`,`entity_id`,`field`,`new_value`,`old_value`,`rev_date_time`) values (4,3,'EDUCATION_TITLE','BACHELOR','DOCTOR','2024-01-09 22:41:41'),(5,3,'EDUCATION_TITLE','DOCTOR','BACHELOR','2024-01-09 22:43:19'),(6,2,'EDUCATION_TITLE','DOCTOR','MASTER','2024-01-09 22:43:59'),(7,1,'EDUCATION_TITLE','BACHELOR','DOCTOR','2024-01-09 22:44:10'),(8,1,'SCIENTIFIC_FIELD','OTHER','PHYSICS','2024-01-09 22:46:16');
+
+/*Table structure for table `tbl_scientific_field` */
+
+DROP TABLE IF EXISTS `tbl_scientific_field`;
+
+CREATE TABLE `tbl_scientific_field` (
+  `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
+  `scientific_field` varchar(255) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `tbl_scientific_field` */
+
+insert  into `tbl_scientific_field`(`id`,`scientific_field`) values (1,'MATHEMATICS'),(2,'PHYSICS'),(3,'COMPUTER_SCIENCE'),(4,'HISTORY'),(5,'OTHER');
+
+/*Table structure for table `tbl_subject` */
+
+DROP TABLE IF EXISTS `tbl_subject`;
+
+CREATE TABLE `tbl_subject` (
+  `id` bigint(20) NOT NULL AUTO_INCREMENT,
+  `esbp` int(11) NOT NULL,
+  `name` varchar(10) DEFAULT NULL,
+  `department_id` bigint(20) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `FKpt7r64gn00c77d1j1jhtponth` (`department_id`),
+  CONSTRAINT `FKpt7r64gn00c77d1j1jhtponth` FOREIGN KEY (`department_id`) REFERENCES `tbl_department` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+/*Data for the table `tbl_subject` */
+
+/*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
+/*!40014 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS */;
+/*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
+/*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
