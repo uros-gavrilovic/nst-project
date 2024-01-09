@@ -36,17 +36,13 @@ public class Department {
     @Column(name = "name")
     private String name;
 
+    @JsonBackReference
     @OneToOne
     @JoinColumn(name = "supervisor_id")
     private Member supervisor;
 
+    @JsonBackReference
     @OneToOne
     @JoinColumn(name = "secretary_id")
     private Member secretary;
-
-    @OneToMany(mappedBy = "department")
-    @JsonBackReference
-    @JsonIgnore
-    @Builder.Default
-    private Set<Member> members = new HashSet<>();
 }

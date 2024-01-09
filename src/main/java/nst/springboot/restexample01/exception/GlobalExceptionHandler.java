@@ -30,6 +30,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler{
     public ResponseEntity<MyErrorDetails> handleException(Exception e) {
 
         System.out.println("e.getClass() = " + e.getClass());
+        e.printStackTrace();
         MyErrorDetails myErrorDetails = new MyErrorDetails(e.getMessage());
 
         return new ResponseEntity<>(myErrorDetails, HttpStatus.NOT_FOUND);

@@ -15,6 +15,7 @@ import nst.springboot.restexample01.domain.Member;
 import nst.springboot.restexample01.domain.audit.DepartmentAudit;
 import nst.springboot.restexample01.dto.MemberDto;
 import nst.springboot.restexample01.repository.DepartmentRepository;
+import nst.springboot.restexample01.repository.MemberRepository;
 import nst.springboot.restexample01.repository.audit.DepartmentAuditRepository;
 import nst.springboot.restexample01.service.DepartmentService;
 import nst.springboot.restexample01.adapter.impl.DepartmentAdapter;
@@ -33,13 +34,16 @@ public class DepartmentServiceImpl implements DepartmentService {
     private final MemberAdapter memberAdapter;
     private final DepartmentRepository departmentRepository;
     private final DepartmentAuditRepository departmentAuditRepository;
+    private final MemberRepository memberRepository;
 
     public DepartmentServiceImpl(DepartmentRepository departmentRepository, DepartmentAdapter departmentAdapter,
-                                 DepartmentAuditRepository departmentAuditRepository, MemberAdapter memberAdapter) {
+                                 DepartmentAuditRepository departmentAuditRepository, MemberAdapter memberAdapter,
+                                 MemberRepository memberRepository) {
         this.departmentRepository = departmentRepository;
         this.departmentAdapter = departmentAdapter;
         this.departmentAuditRepository = departmentAuditRepository;
         this.memberAdapter = memberAdapter;
+        this.memberRepository = memberRepository;
     }
 
     @Override
@@ -98,12 +102,14 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public DepartmentDto updateSupervisor(Long id, MemberDto supervisor) {
+        Member newSupervisor = memberRepository.findById(supervisor.getId())
+                .orElseThrow(() -> new RuntimeException("Member does not exist!"));
+
         Optional<Department> optionalDepartment = departmentRepository.findById(id);
         if (optionalDepartment.isPresent()) {
             Department department = optionalDepartment.get();
 
             Member oldSupervisor = department.getSupervisor();
-            Member newSupervisor = memberAdapter.toEntity(supervisor);
 
             department.setSupervisor(newSupervisor);
 
@@ -116,12 +122,14 @@ public class DepartmentServiceImpl implements DepartmentService {
 
     @Override
     public DepartmentDto updateSecretary(Long id, MemberDto secretary) {
+        Member newSecretary = memberRepository.findById(secretary.getId())
+                .orElseThrow(() -> new RuntimeException("Member does not exist!"));
+
         Optional<Department> optionalDepartment = departmentRepository.findById(id);
         if (optionalDepartment.isPresent()) {
             Department department = optionalDepartment.get();
 
             Member oldSecretary = department.getSecretary();
-            Member newSecretary = memberAdapter.toEntity(secretary);
 
             department.setSecretary(newSecretary);
 

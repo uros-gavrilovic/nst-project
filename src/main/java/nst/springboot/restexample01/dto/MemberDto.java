@@ -1,5 +1,9 @@
 package nst.springboot.restexample01.dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;
@@ -30,5 +34,6 @@ public class MemberDto {
 
     private ScientificField scientificField;
 
+    @JsonBackReference
     private DepartmentDto department;
 }

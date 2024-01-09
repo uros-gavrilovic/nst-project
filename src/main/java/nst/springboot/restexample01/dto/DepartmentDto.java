@@ -4,6 +4,8 @@
  */
 package nst.springboot.restexample01.dto;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -21,18 +23,14 @@ import java.util.Set;
 @AllArgsConstructor
 public class DepartmentDto implements Serializable{
     private Long id;
-    
+
     @NotNull
     @Size(min = 2,max = 10, message = "Broj znakova [2-10]")
     private String name;
 
-    private Set<AssignmentDto> assignments;
-
+    @JsonManagedReference
     private MemberDto supervisor;
 
+    @JsonManagedReference
     private MemberDto secretary;
-
-    @Builder.Default
-    private Set<MemberDto> members = new HashSet<>();
-    
 }

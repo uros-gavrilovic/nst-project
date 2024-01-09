@@ -26,9 +26,6 @@ public class DepartmentAdapter implements DtoEntityAdapter<DepartmentDto, Depart
         dto.setName(entity.getName());
         dto.setSupervisor(memberAdapter.toDto(entity.getSupervisor()));
         dto.setSecretary(memberAdapter.toDto(entity.getSecretary()));
-        entity.getMembers().forEach(member -> {
-            dto.getMembers().add(memberAdapter.toDto(member));
-        });
 
         return dto;
     }
@@ -42,9 +39,6 @@ public class DepartmentAdapter implements DtoEntityAdapter<DepartmentDto, Depart
         entity.setName(dto.getName());
         entity.setSupervisor(memberAdapter.toEntity(dto.getSupervisor()));
         entity.setSecretary(memberAdapter.toEntity(dto.getSecretary()));
-        Optional.ofNullable(dto.getMembers())
-                .ifPresent(members -> members.forEach(
-                        memberDto -> entity.getMembers().add(memberAdapter.toEntity(memberDto))));
 
         return entity;
     }

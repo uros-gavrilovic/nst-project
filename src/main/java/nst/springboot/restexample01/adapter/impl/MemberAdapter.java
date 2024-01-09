@@ -33,7 +33,6 @@ public class MemberAdapter implements DtoEntityAdapter<MemberDto, Member> {
         dto.setAcademicTitle(entity.getAcademicTitleEntity().getAcademicTitle());
         dto.setEducationTitle(entity.getEducationTitleEntity().getEducationTitle());
         dto.setScientificField(entity.getScientificFieldEntity().getScientificField());
-        dto.setDepartment(departmentAdapter.toDto(entity.getDepartment()));
 
         return dto;
     }
@@ -58,8 +57,6 @@ public class MemberAdapter implements DtoEntityAdapter<MemberDto, Member> {
         ScientificFieldEntity scientificFieldEntity = new ScientificFieldEntity();
         scientificFieldEntity.setScientificField(ScientificField.valueOf(dto.getScientificField().toString()));
         entity.setScientificFieldEntity(scientificFieldEntity);
-
-        entity.setDepartment(departmentAdapter.toEntity(dto.getDepartment()));
 
         return entity;
     }

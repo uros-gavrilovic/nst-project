@@ -58,6 +58,7 @@ public class DepartmentController {
     public ResponseEntity<List<DepartmentAudit>> getHistory(@RequestParam(required = true, name = "id") Long id,
                                                             @RequestParam(required = true, name = "field") String field)
             throws Exception {
+
         List<DepartmentAudit> departmentAudits = departmentService.getHistory(id, field);
         return new ResponseEntity<>(departmentAudits, HttpStatus.OK);
     }
@@ -72,7 +73,6 @@ public class DepartmentController {
     //localhost:8080/department/1
     @GetMapping("/{id}")
     public DepartmentDto findById(@PathVariable("id") Long id) throws Exception {
-        System.out.println("Controller: " + id);
         return departmentService.findById(id);
     }
 

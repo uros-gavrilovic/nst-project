@@ -1,6 +1,8 @@
 package nst.springboot.restexample01.domain;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
@@ -44,8 +46,8 @@ public class Member {
     @JoinColumn(name = "scientific_field_id")
     private ScientificFieldEntity scientificFieldEntity;
 
-    @ManyToOne
     @JsonManagedReference
+    @ManyToOne
     @JoinColumn(name = "department_id")
     private Department department;
 }

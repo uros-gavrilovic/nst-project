@@ -25,7 +25,8 @@ public class MemberController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<MemberDto>> getAllMembers(@RequestParam int pageSize, @RequestParam String orderType) {
+    public ResponseEntity<Page<MemberDto>> getAllMembers(@RequestParam(defaultValue = "5") int pageSize,
+                                                         @RequestParam(defaultValue = "firstName") String orderType) {
         Pageable pageable = PageRequest.of(0, pageSize, Sort.by(orderType));
         return new ResponseEntity<>(memberService.getAll(pageable), HttpStatus.OK);
     }
@@ -55,8 +56,8 @@ public class MemberController {
 
     @PutMapping("/{id}/update-qualifications")
     public ResponseEntity<MemberDto> updateQualifications(@PathVariable Long id,
-                                                     @RequestParam(required = true) String qualificationType,
-                                                     @RequestBody String newQualification) throws Exception {
+                                                          @RequestParam(required = true) String qualificationType,
+                                                          @RequestBody String newQualification) throws Exception {
         MemberDto updatedMemberDto = memberService.updateQualifications(id, qualificationType, newQualification);
         return new ResponseEntity<>(updatedMemberDto, HttpStatus.OK);
     }
