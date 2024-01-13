@@ -29,7 +29,7 @@ public class Subject implements Serializable {
     private Long id;
 
     @NotEmpty(message = "Ime je obavezno polje")
-    @Size(min = 2, max = 10, message = "Broj znakova je od 2 do 10")
+    @Size(min = 2, max = 255, message = "Broj znakova je od 2 do 255")
     @Column(name = "name")
     private String name;
 

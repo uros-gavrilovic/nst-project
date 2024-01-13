@@ -1,11 +1,12 @@
-create table tbl_department
+CREATE TABLE tbl_department
 (
-    id            bigint unsigned not null AUTO_INCREMENT,
-    name          varchar(100) not null,
-    supervisor_id bigint unsigned not null,
-    secretary_id  bigint unsigned not null,
+    id            BIGINT UNSIGNED NOT NULL AUTO_INCREMENT,
+    name          VARCHAR(255) NOT NULL,
 
-    CONSTRAINT supervisor_fk FOREIGN KEY (supervisor_id) REFERENCES tbl_member (id),
-    CONSTRAINT secretary_fk FOREIGN KEY (secretary_id) REFERENCES tbl_member (id),
-    primary key (id)
+    supervisor_id BIGINT UNSIGNED,
+    secretary_id  BIGINT UNSIGNED,
+
+    PRIMARY KEY (id)
+#     CONSTRAINT supervisor_fk FOREIGN KEY (supervisor_id) REFERENCES tbl_member (id),
+#     CONSTRAINT secretary_fk FOREIGN KEY (secretary_id) REFERENCES tbl_member (id),
 ) 
