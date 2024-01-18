@@ -1,6 +1,8 @@
 package nst.springboot.restexample01.controller;
 
 import nst.springboot.restexample01.domain.Member;
+import nst.springboot.restexample01.domain.audit.DepartmentAudit;
+import nst.springboot.restexample01.domain.audit.MemberAudit;
 import nst.springboot.restexample01.domain.enums.AcademicTitle;
 import nst.springboot.restexample01.dto.MemberDto;
 import nst.springboot.restexample01.service.MemberService;
@@ -12,6 +14,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.data.domain.Pageable;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/member")
@@ -60,5 +64,11 @@ public class MemberController {
                                                           @RequestBody String newQualification) throws Exception {
         MemberDto updatedMemberDto = memberService.updateQualifications(id, qualificationType, newQualification);
         return new ResponseEntity<>(updatedMemberDto, HttpStatus.OK);
+    }
+
+    @GetMapping("/{id}/history")
+    public ResponseEntity<List<MemberAudit>> getHistory(@PathVariable Long id) throws Exception {
+        List<MemberAudit> memberAudits = memberService.getHistory(id);
+        return new ResponseEntity<>(memberAudits, HttpStatus.OK);
     }
 }

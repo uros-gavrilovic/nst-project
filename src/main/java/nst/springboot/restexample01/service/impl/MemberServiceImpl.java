@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
@@ -119,6 +120,11 @@ public class MemberServiceImpl implements MemberService {
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("Invalid qualification type/value!");
         }
+    }
+
+    @Override
+    public List<MemberAudit> getHistory(Long id) throws Exception {
+       return memberAuditRepository.findByEntityIdOrderByRevDateTimeDesc(id);
     }
 
     private Member getMemberById(Long id) {

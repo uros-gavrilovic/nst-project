@@ -1,5 +1,6 @@
 package nst.springboot.restexample01.service;
 
+import nst.springboot.restexample01.domain.audit.MemberAudit;
 import nst.springboot.restexample01.domain.enums.AcademicTitle;
 import nst.springboot.restexample01.domain.enums.EducationTitle;
 import nst.springboot.restexample01.domain.enums.QualificationType;
@@ -9,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 public interface MemberService {
     MemberDto save(MemberDto memberDto) throws Exception;
     Page<MemberDto> getAll(Pageable pageable);
@@ -17,4 +20,6 @@ public interface MemberService {
     MemberDto findById(Long id) throws Exception;
 
     MemberDto updateQualifications(Long id, String qualificationType, String qualificationValue) throws Exception;
+
+    List<MemberAudit> getHistory(Long id) throws Exception;
 }

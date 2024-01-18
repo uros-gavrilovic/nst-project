@@ -6,4 +6,6 @@ import java.util.List;
 
 public interface MemberAuditRepository extends JpaRepository<MemberAudit, Long> {
     List<MemberAudit> findByEntityIdAndFieldOrderByRevDateTimeDesc(Long entityId, String field);
+
+    List<MemberAudit> findByEntityIdOrderByRevDateTimeDesc(Long id);
 }
