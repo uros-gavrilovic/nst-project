@@ -4,6 +4,8 @@ import nst.springboot.restexample01.domain.Member;
 import nst.springboot.restexample01.domain.audit.DepartmentAudit;
 import nst.springboot.restexample01.domain.audit.MemberAudit;
 import nst.springboot.restexample01.domain.enums.AcademicTitle;
+import nst.springboot.restexample01.domain.enums.QualificationType;
+import nst.springboot.restexample01.domain.network.NetworkPackage;
 import nst.springboot.restexample01.dto.MemberDto;
 import nst.springboot.restexample01.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,8 +63,8 @@ public class MemberController {
     @PutMapping("/{id}/update-qualifications")
     public ResponseEntity<MemberDto> updateQualifications(@PathVariable Long id,
                                                           @RequestParam(required = true) String qualificationType,
-                                                          @RequestBody String newQualification) throws Exception {
-        MemberDto updatedMemberDto = memberService.updateQualifications(id, qualificationType, newQualification);
+                                                          @RequestBody NetworkPackage<String> networkPackage) throws Exception {
+        MemberDto updatedMemberDto = memberService.updateQualifications(id, qualificationType, networkPackage);
         return new ResponseEntity<>(updatedMemberDto, HttpStatus.OK);
     }
 

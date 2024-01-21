@@ -7,6 +7,7 @@ import nst.springboot.restexample01.domain.enums.AcademicTitle;
 import nst.springboot.restexample01.domain.enums.EducationTitle;
 import nst.springboot.restexample01.domain.enums.QualificationType;
 import nst.springboot.restexample01.domain.enums.ScientificField;
+import nst.springboot.restexample01.domain.network.NetworkPackage;
 import nst.springboot.restexample01.dto.DepartmentDto;
 import nst.springboot.restexample01.dto.MemberDto;
 import nst.springboot.restexample01.repository.AcademicTitleEntityRepository;
@@ -80,42 +81,41 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public MemberDto updateQualifications(Long id, String type, String value) {
+    public MemberDto updateQualifications(Long id, String type, NetworkPackage<String> networkPackage) {
         try {
             QualificationType qualificationType = QualificationType.valueOf(type.toUpperCase());
-            value = value.toUpperCase();
 
             Optional<Member> optionalMember = memberRepository.findById(id);
             if (optionalMember.isEmpty()) throw new RuntimeException("Member does not exist!");
             Member member = optionalMember.get();
 
             String oldValue = null;
-            String newValue = value;
+            String newValue = networkPackage.getData().toString();
             MemberFields fieldName = null;
 
             switch (qualificationType) {
                 case ACADEMIC_TITLE:
-                    AcademicTitleEntity academicTitleEntity = academicTitleEntityService.findByAcademicTitle(value);
+                    AcademicTitleEntity academicTitleEntity = academicTitleEntityService.findByAcademicTitle(newValue);
                     oldValue = member.getAcademicTitleEntity().getAcademicTitle().toString();
                     fieldName = MemberFields.ACADEMIC_TITLE;
                     member.setAcademicTitleEntity(academicTitleEntity);
                     break;
                 case EDUCATION_TITLE:
-                    EducationTitleEntity educationTitleEntity = educationTitleEntityService.findByEducationTitle(value);
+                    EducationTitleEntity educationTitleEntity = educationTitleEntityService.findByEducationTitle(newValue);
                     oldValue = member.getEducationTitleEntity().getEducationTitle().toString();
                     fieldName = MemberFields.EDUCATION_TITLE;
                     member.setEducationTitleEntity(educationTitleEntity);
                     break;
                 case SCIENTIFIC_FIELD:
                     ScientificFieldEntity scientificFieldEntity =
-                            scientifitFieldEntityService.findByScientificField(value);
+                            scientifitFieldEntityService.findByScientificField(newValue);
                     oldValue = member.getScientificFieldEntity().getScientificField().toString();
                     fieldName = MemberFields.SCIENTIFIC_FIELD;
                     member.setScientificFieldEntity(scientificFieldEntity);
                     break;
             }
             member = memberRepository.save(member);
-            logMemberAudit(member, fieldName, oldValue, newValue);
+            logMemberAudit(member, fieldName, oldValue, newValue, networkPackage.getDateTime());
             return memberAdapter.toDto(member);
         } catch (IllegalArgumentException e) {
             throw new RuntimeException("Invalid qualification type/value!");
@@ -136,14 +136,18 @@ public class MemberServiceImpl implements MemberService {
         }
     }
 
-    private void logMemberAudit(Member member, MemberFields fieldName, String oldValue, String newValue) {
+    private void logMemberAudit(Member member,
+                                MemberFields fieldName,
+                                String oldValue,
+                                String newValue,
+                                LocalDateTime dateTime) {
         MemberAudit audit = new MemberAudit();
 
         audit.setEntityId(member.getId());
         audit.setField(fieldName.toString());
         audit.setOldValue(oldValue);
         audit.setNewValue(newValue);
-        audit.setRevDateTime(LocalDateTime.now());
+        audit.setRevDateTime(dateTime == null ? LocalDateTime.now() : dateTime);
 
         memberAuditRepository.save(audit);
     }

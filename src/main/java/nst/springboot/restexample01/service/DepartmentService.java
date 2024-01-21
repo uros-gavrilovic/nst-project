@@ -8,6 +8,7 @@ import java.util.List;
 
 import nst.springboot.restexample01.domain.Department;
 import nst.springboot.restexample01.domain.audit.DepartmentAudit;
+import nst.springboot.restexample01.domain.network.NetworkPackage;
 import nst.springboot.restexample01.dto.DepartmentDto;
 import nst.springboot.restexample01.dto.MemberDto;
 
@@ -22,7 +23,6 @@ public interface DepartmentService {
     void update(DepartmentDto department) throws Exception;
     DepartmentDto findById(Long id) throws Exception;
 
-    DepartmentDto updateSupervisor(Long id, MemberDto supervisor);
-    DepartmentDto updateSecretary(Long id, MemberDto secretary);
+    DepartmentDto promote(Long departmentId, String position, NetworkPackage networkPackage);
     List<DepartmentAudit> getHistory(Long id, String field);
 }

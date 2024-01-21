@@ -4,6 +4,8 @@
  */
 package nst.springboot.restexample01.service.impl;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.BiConsumer;
@@ -13,6 +15,8 @@ import nst.springboot.restexample01.adapter.impl.MemberAdapter;
 import nst.springboot.restexample01.domain.Department;
 import nst.springboot.restexample01.domain.Member;
 import nst.springboot.restexample01.domain.audit.DepartmentAudit;
+import nst.springboot.restexample01.domain.enums.DepartmentPosition;
+import nst.springboot.restexample01.domain.network.NetworkPackage;
 import nst.springboot.restexample01.dto.MemberDto;
 import nst.springboot.restexample01.repository.DepartmentRepository;
 import nst.springboot.restexample01.repository.MemberRepository;
@@ -101,11 +105,22 @@ public class DepartmentServiceImpl implements DepartmentService {
     }
 
     @Override
-    public DepartmentDto updateSupervisor(Long id, MemberDto supervisor) {
-        Member newSupervisor = memberRepository.findById(supervisor.getId())
+    public DepartmentDto promote(Long departmentId, String position, NetworkPackage networkPackage) {
+        switch (DepartmentPosition.valueOf(position.toUpperCase())) {
+            case SUPERVISOR:
+                return updateSupervisor(departmentId, networkPackage);
+            case SECRETARY:
+                return updateSecretary(departmentId, networkPackage);
+            default:
+                throw new IllegalArgumentException("Invalid position: " + position);
+        }
+    }
+
+    public DepartmentDto updateSupervisor(Long departmentId, NetworkPackage<MemberDto> networkPackage) {
+        Member newSupervisor = memberRepository.findById(networkPackage.getData().getId())
                 .orElseThrow(() -> new RuntimeException("Member does not exist!"));
 
-        Optional<Department> optionalDepartment = departmentRepository.findById(id);
+        Optional<Department> optionalDepartment = departmentRepository.findById(departmentId);
         if (optionalDepartment.isPresent()) {
             Department department = optionalDepartment.get();
 
@@ -113,19 +128,18 @@ public class DepartmentServiceImpl implements DepartmentService {
 
             department.setSupervisor(newSupervisor);
 
-            logDepartmentAudit(department, "supervisor", oldSupervisor, newSupervisor);
+            logDepartmentAudit(department, "supervisor", oldSupervisor, newSupervisor, networkPackage.getDateTime());
             return departmentAdapter.toDto(departmentRepository.save(department));
         } else {
             throw new RuntimeException("Department does not exist!");
         }
     }
 
-    @Override
-    public DepartmentDto updateSecretary(Long id, MemberDto secretary) {
-        Member newSecretary = memberRepository.findById(secretary.getId())
+    public DepartmentDto updateSecretary(Long departmentId, NetworkPackage<MemberDto> networkPackage) {
+        Member newSecretary = memberRepository.findById(networkPackage.getData().getId())
                 .orElseThrow(() -> new RuntimeException("Member does not exist!"));
 
-        Optional<Department> optionalDepartment = departmentRepository.findById(id);
+        Optional<Department> optionalDepartment = departmentRepository.findById(departmentId);
         if (optionalDepartment.isPresent()) {
             Department department = optionalDepartment.get();
 
@@ -133,7 +147,7 @@ public class DepartmentServiceImpl implements DepartmentService {
 
             department.setSecretary(newSecretary);
 
-            logDepartmentAudit(department, "secretary", oldSecretary, newSecretary);
+            logDepartmentAudit(department, "secretary", oldSecretary, newSecretary, networkPackage.getDateTime());
             return departmentAdapter.toDto(departmentRepository.save(department));
         } else {
             throw new RuntimeException("Department does not exist!");
@@ -150,14 +164,18 @@ public class DepartmentServiceImpl implements DepartmentService {
         }
     }
 
-    private void logDepartmentAudit(Department department, String fieldName, Member oldValue, Member newValue) {
+    private void logDepartmentAudit(Department department,
+                                    String fieldName,
+                                    Member oldValue,
+                                    Member newValue,
+                                    LocalDateTime dateTime) {
         DepartmentAudit audit = new DepartmentAudit();
 
         audit.setEntityId(department.getId());
         audit.setField(fieldName);
         audit.setOldValue(getIdAsString(oldValue));
         audit.setNewValue(getIdAsString(newValue));
-        audit.setRevDateTime(java.time.LocalDateTime.now());
+        audit.setRevDateTime(dateTime == null ? LocalDateTime.now() : dateTime);
 
         departmentAuditRepository.save(audit);
     }

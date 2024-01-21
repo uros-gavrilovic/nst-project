@@ -10,6 +10,7 @@ import java.util.List;
 
 import nst.springboot.restexample01.domain.Department;
 import nst.springboot.restexample01.domain.audit.DepartmentAudit;
+import nst.springboot.restexample01.domain.network.NetworkPackage;
 import nst.springboot.restexample01.dto.MemberDto;
 import nst.springboot.restexample01.service.DepartmentService;
 import nst.springboot.restexample01.dto.DepartmentDto;
@@ -40,25 +41,32 @@ public class DepartmentController {
         return new ResponseEntity<>(deptDto, HttpStatus.CREATED);
     }
 
-    @PutMapping("/{id}/set-supervisor")
-    public ResponseEntity<DepartmentDto> setSupervisor(@PathVariable("id") Long id, @RequestBody MemberDto memberDto)
-            throws Exception {
-        DepartmentDto deptDto = departmentService.updateSupervisor(id, memberDto);
+//    @PutMapping("/{id}/set-supervisor")
+//    public ResponseEntity<DepartmentDto> setSupervisor(@PathVariable("id") Long id, @RequestBody MemberDto memberDto)
+//            throws Exception {
+//        DepartmentDto deptDto = departmentService.updateSupervisor(id, memberDto);
+//        return new ResponseEntity<>(deptDto, HttpStatus.OK);
+//    }
+//
+//    @PutMapping("/{id}/set-secretary")
+//    public ResponseEntity<DepartmentDto> setSecretary(@PathVariable("id") Long id, @RequestBody MemberDto memberDto)
+//            throws Exception {
+//        DepartmentDto deptDto = departmentService.updateSecretary(id, memberDto);
+//        return new ResponseEntity<>(deptDto, HttpStatus.OK);
+//    }
+
+    @PutMapping("/{id}/promote-member")
+    public ResponseEntity<DepartmentDto> promote(@PathVariable("id") Long departmentId,
+                                                 @RequestParam("position") String position,
+                                                 @RequestBody NetworkPackage<MemberDto> networkPackage) throws Exception {
+        DepartmentDto deptDto = departmentService.promote(departmentId, position, networkPackage);
         return new ResponseEntity<>(deptDto, HttpStatus.OK);
     }
 
-    @PutMapping("/{id}/set-secretary")
-    public ResponseEntity<DepartmentDto> setSecretary(@PathVariable("id") Long id, @RequestBody MemberDto memberDto)
-            throws Exception {
-        DepartmentDto deptDto = departmentService.updateSecretary(id, memberDto);
-        return new ResponseEntity<>(deptDto, HttpStatus.OK);
-    }
-
-    @GetMapping("/history")
-    public ResponseEntity<List<DepartmentAudit>> getHistory(@RequestParam(required = true, name = "id") Long id,
+    @GetMapping("{id}/history")
+    public ResponseEntity<List<DepartmentAudit>> getHistory(@PathVariable("id") Long id,
                                                             @RequestParam(required = true, name = "field") String field)
             throws Exception {
-
         List<DepartmentAudit> departmentAudits = departmentService.getHistory(id, field);
         return new ResponseEntity<>(departmentAudits, HttpStatus.OK);
     }
