@@ -24,7 +24,7 @@ public class SubjectAdapter implements DtoEntityAdapter<SubjectDto, Subject> {
     public SubjectDto toDto(Subject entity) {
         return new SubjectDto(
                 entity.getId(), 
-                entity.getName(), entity.getEsbp(), 
+                entity.getName(), entity.getEspb(),
                 departmentAdapter.toDto(entity.getDepartment())
         );
     }

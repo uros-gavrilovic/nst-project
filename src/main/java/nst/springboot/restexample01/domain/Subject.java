@@ -33,7 +33,7 @@ public class Subject implements Serializable {
     @Column(name = "name")
     private String name;
 
-    private int esbp;
+    private int espb;
 
     @ManyToOne()
     @JoinColumn(name = "department_id")
@@ -42,10 +42,10 @@ public class Subject implements Serializable {
     public Subject() {
     }
 
-    public Subject(Long id, String name, int esbp, Department department) {
+    public Subject(Long id, String name, int espb, Department department) {
         this.id = id;
         this.name = name;
-        this.esbp = esbp;
+        this.espb = espb;
         this.department = department;
     }
 
@@ -65,12 +65,12 @@ public class Subject implements Serializable {
         this.name = name;
     }
 
-    public int getEsbp() {
-        return esbp;
+    public int getEspb() {
+        return espb;
     }
 
-    public void setEsbp(int esbp) {
-        this.esbp = esbp;
+    public void setEspb(int esbp) {
+        this.espb = esbp;
     }
 
     public Department getDepartment() {
